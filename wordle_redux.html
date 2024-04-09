@@ -7,33 +7,59 @@
         <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
         <style>
             .title { width: 100%;font-weight: bold; color: black;}
+            
             .squares {
                 display: inline-block; text-align: center; font-size: 30px; color:white; border: 1px solid #D3D3D3;
                 width: 60px; height: 60px; line-height: 60px; align-items: center; margin: 2px; padding: 2px; font-weight: bold;
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             }
-            .keys {
-                display: inline-block; text-align: center; font-size: 20px; color: black; border: 1px solid #D3D3D3; border-radius: 5px;
-                width: 40px; height: 60px; line-height: 60px; align-items: center; margin: 2px; padding: 2px; font-weight: bold; justify-content: center;
-                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            }
+
+            .keys {font-size: 20px; line-height: 60px; text-align: center; color: black; border: 1px solid #D3D3D3; border-radius: 5px; margin: 2px; vertical-align: top; 
+            padding: 2px; font-weight: bold; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;}
+            
             #gameboard {width: 350px; margin: auto;}
-            #keyboard {width: 500px; padding-top: 20px; margin: auto;align-items: center; justify-content: center;}
+            #keyboard {margin-left: 600px;}
+            #board_row1 {width: 500px; margin-top: 30px;} 
+            #board_row2 {width: 500px; margin-left: 28px; margin-top: 15px;}
+            #board_row3 {width: 590px; margin-top: 15px;}
+            
+            #keyboard1 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+                grid-template-rows: 70px;
+            }
+
+            #keyboard2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+                grid-template-rows: 70px;
+            }
+
+            #keyboard3 {
+                display: grid;
+                grid-template-columns: 75px 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 75px;
+                grid-template-rows: 70px;
+            }
+            
             .green {background-color:#6ca965}
             .yellow {background-color: #c8b653;}
             .dark-grey {background-color: #787c7f;}
             .light-grey {background-color:#D3D3D3;}
             .grey {background-color: #E5E4E2;}
-            .keys.grey {width: 60px; font-size: 12px; vertical-align: top;}
+            .keys.grey {font-size: 15px;}
 
         </style>
     </head>
     <body>
         <div id="title">
-            <h1 style="text-align: center; font-size: 35px;">Wordle</h1>
+            <h1 style="text-align: center; font-size: 35px; font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;">Wordle</h1>
         </div>
         <div id="wordle"></div>
-        <div id="kboard"></div>
+        <div id="keyboard">
+            <div id="board_row1"></div>
+            <div id="board_row2"></div>
+            <div id="board_row3"></div>
+        </div>
         <script>           
             function squares(letter, color='white') {
                 this.letter = letter;
@@ -49,18 +75,28 @@
                 new squares('M', 'green'), new squares('O', 'green'), new squares('O', 'green'), new squares('D', 'green'), new squares('Y', 'green'),
             ]
 
-            alphabet = [
+            alphabet_row1 = [
                 new squares('Q', 'light-grey'), new squares('W', 'light-grey'), new squares('E', 'light-grey'), new squares('R', 'dark-grey'),new squares('T', 'dark-grey'), new squares('Y', 'green'), 
-                new squares('U', 'light-grey'), new squares('I', 'dark-grey'), new squares('O', 'green'), new squares('P', 'light-grey'), new squares('A', 'dark-grey'), new squares('S', 'dark-grey'), 
-                new squares('D', 'green'), new squares('F', 'dark-grey'), new squares('G', 'dark-grey'), new squares('H', 'dark-grey'), new squares('J', 'light-grey'), new squares('K', 'light-grey'),
-                new squares('L', 'dark-grey'), new squares('ENTER', 'grey'), new squares('Z', 'light-grey'), new squares('X', 'light-grey'), new squares('C', 'light-grey'), new squares('V', 'light-grey'),
+                new squares('U', 'light-grey'), new squares('I', 'dark-grey'), new squares('O', 'green'), new squares('P', 'light-grey')]
+
+            alphabet_row2 = [
+                new squares('A', 'dark-grey'), new squares('S', 'dark-grey'), new squares('D', 'green'), new squares('F', 'dark-grey'), new squares('G', 'dark-grey'), new squares('H', 'dark-grey'), 
+                new squares('J', 'light-grey'), new squares('K', 'light-grey'), new squares('L', 'dark-grey')]
+
+            alphabet_row3 = [
+                new squares('ENTER', 'grey'), new squares('Z', 'light-grey'), new squares('X', 'light-grey'), new squares('C', 'light-grey'), new squares('V', 'light-grey'),
                 new squares('B', 'light-grey'), new squares('N', 'light-grey'), new squares('M', 'green'), new squares('DELETE', 'grey')]
 
             var board = React.createElement("div", {id: "gameboard"}, letters.map((item, i) => React.createElement("div", {key: i, className: 'squares ' + item.color}, item.letter)));
-            var keyboard = React.createElement("div", {id: "keyboard"}, alphabet.map((item, j) => React.createElement("div", {key: j, className: 'keys ' + item.color}, item.letter)));
+            
+            var row1 = React.createElement("div", {id: "keyboard1"}, alphabet_row1.map((item, j) => React.createElement("div", {key: j, className: 'keys ' + item.color}, item.letter)));
+            var row2 = React.createElement("div", {id: "keyboard2"}, alphabet_row2.map((item, j) => React.createElement("div", {key: j, className: 'keys ' + item.color}, item.letter)));
+            var row3 = React.createElement("div", {id: "keyboard3"}, alphabet_row3.map((item, j) => React.createElement("div", {key: j, className: 'keys ' + item.color}, item.letter)));
             
             ReactDOM.render(board, wordle);
-            ReactDOM.render(keyboard, kboard);
+            ReactDOM.render(row1, board_row1);
+            ReactDOM.render(row2, board_row2);
+            ReactDOM.render(row3, board_row3);
 
         </script>
     </body>
