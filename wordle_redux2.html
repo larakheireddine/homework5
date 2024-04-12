@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Wordle Redux 2.0</title>
+        <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <style type="text/css">
+            h1 {
+                text-align: center; font-family: "Source Sans Pro", "Arial", sans-serif; font-size: 38px; letter-spacing: 0.01px;
+            }
+            #keys {
+                padding: 2px; border: 1px solid #D3D3D3; margin: 2px;
+            }
+
+            #wordle {
+                width: 430px; margin: auto; font-size: 30px; color: white; font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+                line-height: 70px; text-align: center; font-weight: bold; margin-top: 30px;
+            }
+            #letters {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                grid-template-rows: 80px 80px 80px 80px 80px 80px;
+            }
+
+            #lets {
+                padding: 2px; margin: 2px; border-radius: 4px; color: black; font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif; align-items: center;
+            }
+
+            #boards {
+                width: 550px; margin: auto; margin-top: 20px; text-align: center; line-height: 65px; font-size: 18px; font-weight: bold; 
+            }
+
+            #board {
+                display: grid;
+                align-items: center;
+                grid-template-columns: 52px 52px 52px 52px 52px 52px 52px 52px 52px 52px;
+                grid-template-rows: 70px 70px 70px;
+                row-gap: 1ch;
+            }
+            .white {background-color: white;}
+            .green {background-color:#6ca965}
+            .yellow {background-color: #c8b653;}
+            .dark-grey {background-color: #787c7f;}
+            .light-grey {background-color:#D3D3D3;}
+            .grey {background-color: #E5E4E2;}
+
+        </style>
+    </head>
+    <body>
+        <h1>Wordle</h1>
+        <hr>
+        <div id="wordle"></div>
+        <div id="boards"></div>
+        <script type="text/babel">
+            function squares(letter, color) {
+                this.letter = letter;
+                this.color = color;
+            }
+
+            var options = [
+                new squares('M', 'green'), new squares('I', 'dark-grey'), new squares('G', 'dark-grey'), new squares('H', 'dark-grey'), new squares('T', 'dark-grey'),
+                new squares('F', 'dark-grey'), new squares('L', 'dark-grey'), new squares('O', 'green'), new squares('O', 'dark-grey'), new squares('D', 'yellow'),
+                new squares('S', 'dark-grey'), new squares('T', 'dark-grey'), new squares('R', 'dark-grey'), new squares('A', 'dark-grey'), new squares('Y', 'green'),
+                new squares('O', 'yellow'), new squares('V', 'dark-grey'), new squares('O', 'green'), new squares('I', 'dark-grey'), new squares('D', 'yellow'), 
+                new squares('M', 'green'), new squares('O', 'yellow'), new squares('L', 'dark-grey'), new squares('D', 'green'), new squares('Y', 'green'),
+                new squares('M', 'green'), new squares('O', 'green'), new squares('O', 'green'), new squares('D', 'green'), new squares('Y', 'green'),
+            ]
+
+            var alphabet = [
+                new squares('Q', 'light-grey'), new squares('W', 'light-grey'), new squares('E', 'light-grey'), new squares('R', 'dark-grey'),new squares('T', 'dark-grey'), new squares('Y', 'green'), 
+                new squares('U', 'light-grey'), new squares('I', 'dark-grey'), new squares('O', 'green'), new squares('P', 'light-grey'), new squares('A', 'dark-grey'), new squares('S', 'dark-grey'), 
+                new squares('D', 'green'), new squares('F', 'dark-grey'), new squares('G', 'dark-grey'), new squares('H', 'dark-grey'), new squares('J', 'light-grey'), new squares('K', 'light-grey'), 
+                new squares('L', 'dark-grey'), new squares('ENT', 'grey'), new squares(' ', 'white'), new squares('Z', 'light-grey'), new squares('X', 'light-grey'), new squares('C', 'light-grey'), new squares('V', 'light-grey'),
+                new squares('B', 'light-grey'), new squares('N', 'light-grey'), new squares('M', 'green'), new squares('DEL', 'grey')]
+
+            var board = <div id='letters'>{options.map((letters, i)=> <div key={i} id='keys' className={letters.color}>{letters.letter}</div>)}</div>;
+            var keyboard = <div id='board'>{alphabet.map((letters, i)=> <div key={i} id='lets' className={letters.color}>{letters.letter}</div>)}</div>;
+
+            ReactDOM.render(board,wordle);
+            ReactDOM.render(keyboard,boards);
+
+        </script>
+
+    </body>
+</html>
